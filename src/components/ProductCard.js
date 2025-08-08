@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext';
 import { HeartIcon, CartIcon } from '../icons';
 import './ProductCard.css';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, compact = false }) => {
   const [selectedVariant, setSelectedVariant] = useState(product.variants ? product.variants[0] : null);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { addToCart } = useCart();
@@ -39,47 +39,54 @@ const ProductCard = ({ product }) => {
   const currentPrice = selectedVariant ? selectedVariant.price : product.price;
 
   return (
-    <div className="product-card" data-product={product.id}>
+    <div className={`product-card ${compact ? 'compact' : ''}`} data-product={product.id}>
       <div className="product-image">
         <img src={product.image} alt={product.name} />
-        <button 
-          className={`wishlist-heart ${isWishlisted ? 'wishlisted' : ''}`}
-          onClick={handleWishlistToggle}
-        >
-          <HeartIcon size={20} filled={isWishlisted} />
-        </button>
-      </div>
-      
-      <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
-        
-        <div className="product-pricing">
-          <span className="current-price">₹{currentPrice.toFixed(2)}</span>
-          {product.original_price && product.original_price > currentPrice && (
-            <span className="original-price">₹{product.original_price.toFixed(2)}</span>
-          )}
-        </div>
-        
-        {product.variants && product.variants.length > 0 && (
-          <div className="product-options">
-            <select 
-              className="weight-selector" 
-              value={selectedVariant?.weight || ''}
-              onChange={handleVariantChange}
-            >
-              {product.variants.map((variant, index) => (
-                <option key={index} value={variant.weight}>
-                  {variant.weight}
-                </option>
-              ))}
-            </select>
-          </div>
+        {!compact && (
+          <button
+            className={`wishlist-heart ${isWishlisted ? 'wishlisted' : ''}`}
+            onClick={handleWishlistToggle}
+          >
+            <HeartIcon size={20} filled={isWishlisted} />
+          </button>
         )}
-        
-        <button className="add-to-cart-btn" onClick={handleAddToCart}>
-          <CartIcon size={18} />
-          <span>Add to Cart</span>
-        </button>
+      </div>
+
+      <div className="product-info">
+        {compact ? (
+          <p className="product-description">
+            {product.description}
+          </p>
+        ) : (
+          <>
+            <h3 className="product-name">{product.name}</h3>
+            <div className="product-pricing">
+              <span className="current-price">₹{currentPrice.toFixed(2)}</span>
+              {product.original_price && product.original_price > currentPrice && (
+                <span className="original-price">₹{product.original_price.toFixed(2)}</span>
+              )}
+            </div>
+            {product.variants && product.variants.length > 0 && (
+              <div className="product-options">
+                <select
+                  className="weight-selector"
+                  value={selectedVariant?.weight || ''}
+                  onChange={handleVariantChange}
+                >
+                  {product.variants.map((variant, index) => (
+                    <option key={index} value={variant.weight}>
+                      {variant.weight}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <button className="add-to-cart-btn" onClick={handleAddToCart}>
+              <CartIcon size={18} />
+              <span>Add to Cart</span>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

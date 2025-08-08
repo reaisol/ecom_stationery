@@ -24,7 +24,7 @@ def test_windows_auth():
         cursor.execute("SELECT current_user, version();")
         result = cursor.fetchone()
         
-        print(f"✅ SUCCESS with Windows Authentication!")
+        print(f"SUCCESS with Windows Authentication!")
         print(f"Connected as: {result[0]}")
         print(f"PostgreSQL Version: {result[1]}")
         
@@ -34,7 +34,7 @@ def test_windows_auth():
         return current_user
         
     except psycopg2.Error as e:
-        print(f"❌ Windows Authentication failed: {e}")
+        print(f" Windows Authentication failed: {e}")
         return None
 
 if __name__ == "__main__":

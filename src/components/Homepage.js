@@ -48,9 +48,12 @@ const Homepage = () => {
           <h2 className="section-title">Explore Our Popular Products</h2>
           
           <div className="products-grid">
-            {products.slice(0, 4).map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {products
+              .filter(p => p.category !== 'Specialty')
+              .slice(0, 4)
+              .map(product => (
+                <ProductCard key={product.id} product={product} compact />
+              ))}
           </div>
         </div>
       </section>
@@ -64,7 +67,7 @@ const Homepage = () => {
           </div>
           
           <div className="catalog-grid">
-            {products.map(product => (
+            {products.filter(p => p.category !== 'Specialty').map(product => (
               <ProductCard key={`catalog-${product.id}`} product={product} />
             ))}
           </div>

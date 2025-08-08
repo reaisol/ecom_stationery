@@ -6,7 +6,7 @@ load_dotenv()
 
 class Config:
     # Database Configuration
-    DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/papercart_db')
+    DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:admin1234@localhost:5432/papercart_db')
     
     # Parse DATABASE_URL for individual components
     DB_HOST = os.getenv('DB_HOST', 'localhost')

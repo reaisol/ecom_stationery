@@ -678,7 +678,7 @@ def get_products():
             'price': 400.00,
             'original_price': 450.00,
             'image': '/images/a4-bundle.jpg',
-            'description': 'A delightful mix of premium carbons, perfect for tracking or culinary uses. High quality and efficient.',
+            'description': 'Premium A1 bundle sheets suitable for posters, CAD drawings, and presentation prints.',
             'variants': [
                 {'weight': '250 g', 'price': 400.00},
                 {'weight': '500 g', 'price': 750.00},
@@ -692,7 +692,7 @@ def get_products():
             'price': 220.00,
             'original_price': 300.00,
             'image': '/images/a4-bundle.jpg',
-            'description': 'Hand picked exotic spices to elevate your dishes. Authentic flavors from around the world.',
+            'description': 'Everyday A4 bundle sheets for office printouts, school projects, and home use.',
             'variants': [
                 {'weight': '250 g', 'price': 220.00},
                 {'weight': '500 g', 'price': 420.00},
@@ -734,7 +734,7 @@ def get_products():
             'price': 380.00,
             'original_price': 400.00,
             'image': '/images/passport-photo.jpg',
-            'description': 'A healthy blend of almonds, walnuts, and pistachios, ideal for energy and well-being.',
+            'description': 'Glossy photo sheets optimized for crisp, passport-size photo prints.',
             'variants': [
                 {'weight': '250 g', 'price': 380.00},
                 {'weight': '500 g', 'price': 720.00},
@@ -769,20 +769,6 @@ def get_products():
                 {'weight': '800 g', 'price': 950.00}
             ],
             'category': 'Bundle Sheets'
-        },
-        {
-            'id': 8,
-            'name': 'Organic Almonds Whole',
-            'price': 550.00,
-            'original_price': 600.00,
-            'image': '/images/a3-bundle.jpg',
-            'description': 'Premium organic whole almonds, perfect for healthy snacking and cooking.',
-            'variants': [
-                {'weight': '500 g', 'price': 550.00},
-                {'weight': '1 kg', 'price': 1000.00},
-                {'weight': '2 kg', 'price': 1800.00}
-            ],
-            'category': 'Specialty'
         }
     ]
     

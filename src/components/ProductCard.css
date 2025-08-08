@@ -68,12 +68,23 @@
   padding: 1.5rem;
 }
 
+.product-card.compact .product-info {
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+}
+
 .product-name {
   font-size: 1.1rem;
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 1rem;
   line-height: 1.4;
+}
+
+.product-description {
+  margin: 0;
+  color: #34495e;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .product-pricing {
