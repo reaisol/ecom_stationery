@@ -1,128 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import ProductCard from './ProductCard';
-import CouponModal from './CouponModal';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './Homepage.css';
 
+const categories = [
+  {
+    key: 'a1',
+    title: 'A1 Paper Sheets',
+    description: 'Premium quality, A1 Sheets.',
+    image: '/images/a3-bundle.jpg',
+    cta: 'Select',
+    slug: 'a1-paper-sheets'
+  },
+  {
+    key: 'a2',
+    title: 'A2 Paper Sheets',
+    description: 'Premium quality, A2 Sheets.',
+    image: '/images/a2-bundle.jpg',
+    cta: 'Select',
+    slug: 'a2-paper-sheets'
+  },
+  {
+    key: 'a3',
+    title: 'A3 Paper Sheets',
+    description: 'Premium quality, A3 Sheets.',
+    image: '/images/a3-bundle.jpg',
+    cta: 'Select',
+    slug: 'a3-paper-sheets'
+  },
+  {
+    key: 'a4',
+    title: 'A4 Paper Sheets',
+    description: 'Premium quality, A4 Sheets.',
+    image: '/images/a4-bundle.jpg',
+    cta: 'Select',
+    slug: 'a4-paper-sheets'
+  },
+  {
+    key: 'passport',
+    title: 'Passport Size Photos',
+    description: 'Premium photo sheets.',
+    image: '/images/passport-photo.jpg',
+    cta: 'Select',
+    slug: 'passport-size-photos'
+  }
+];
+
 const Homepage = () => {
-  const [products, setProducts] = useState([]);
-  const [showCouponModal, setShowCouponModal] = useState(false);
-
-  useEffect(() => {
-    // Fetch products from backend
-    fetch('http://localhost:5000/api/products')
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
-  }, []);
-
   return (
     <div className="homepage">
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section minimal">
         <div className="container">
           <div className="hero-content">
             <div className="hero-text">
-              <h1 className="hero-title">
-                Your Ideas<br />
-                Deserve Perfect<br />
-                Pages.
-              </h1>
-              <p className="hero-subtitle">
-                "Your trusted source for premium, high-quality papers that<br />
-                meet every expectation."
+              <h1 className="hero-title large">Your Essential<br />Paper & Photo<br />Store</h1>
+              <p className="hero-subtitle subtle">
+                Discover high-quality paper sheets for all your needs and
+                perfectly sized passport photos for official documents.
+                Simplicity and quality at your fingertips.
               </p>
-              <button className="btn btn-primary hero-btn">
-                Shop Now
-              </button>
+              <Link className="btn btn-primary hero-btn" to="#categories">Explore Products</Link>
             </div>
             <div className="hero-image">
-              <img src="./images/hero-paper.jpg" alt="Premium Paper Stack" />
+              <img src="/images/hero-paper.jpg" alt="Paper sheets and passport photo" loading="eager" decoding="async" fetchpriority="high" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Popular Products Section */}
-      <section className="popular-products">
+      {/* Categories Section */}
+      <section className="categories-section" id="categories">
         <div className="container">
-          <h2 className="section-title">Explore Our Popular Products</h2>
-          
-          <div className="products-grid">
-            {products
-              .filter(p => p.category !== 'Specialty')
-              .slice(0, 4)
-              .map(product => (
-                <ProductCard key={product.id} product={product} compact />
-              ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Full Product Catalog Section */}
-      <section className="product-catalog">
-        <div className="container">
-          <div className="catalog-header">
-            <h2 className="section-title">Papers</h2>
-            <p className="catalog-subtitle">Complete range of premium paper products for all your needs</p>
-          </div>
-          
-          <div className="catalog-grid">
-            {products.filter(p => p.category !== 'Specialty').map(product => (
-              <ProductCard key={`catalog-${product.id}`} product={product} />
+          <h2 className="section-title">Our Product Categories</h2>
+          <div className="categories-grid">
+            {categories.map(category => (
+              <Link key={category.key} to={`/category/${category.slug}`} className="category-card card">
+                <div className="category-image-wrap">
+                  <img src={category.image} alt={category.title} className="category-image" loading="lazy" decoding="async" />
+                </div>
+                <h3 className="category-title">{category.title}</h3>
+                <p className="category-desc">{category.description}</p>
+                <span className="btn btn-danger category-cta">{category.cta}</span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Coupon Section */}
-      <section className="coupon-section">
-        <div className="container">
-          <div className="coupon-banner">
-            <div className="coupon-content">
-              <h3>🎉 Special Offers Available!</h3>
-              <p>Get exclusive discounts on your first order and bulk purchases</p>
-              <button 
-                className="btn btn-primary"
-                onClick={() => setShowCouponModal(true)}
-              >
-                View Coupons
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="container">
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🚚</div>
-              <h4>Fast Delivery</h4>
-              <p>Quick delivery within 2-5 business days</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">✨</div>
-              <h4>Premium Quality</h4>
-              <p>High-quality papers for all your needs</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">💰</div>
-              <h4>Best Prices</h4>
-              <p>Competitive pricing with bulk discounts</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">📞</div>
-              <h4>24/7 Support</h4>
-              <p>Round-the-clock customer assistance</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {showCouponModal && (
-        <CouponModal onClose={() => setShowCouponModal(false)} />
-      )}
     </div>
   );
 };

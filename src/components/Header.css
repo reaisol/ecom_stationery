@@ -27,9 +27,9 @@
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #e74c3c;
+  color: #DB4437;
 }
 
 .search-bar {
@@ -41,29 +41,29 @@
 
 .search-input {
   flex: 1;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px 0 0 8px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .search-input:focus {
-  border-color: #e74c3c;
+  border-color: #DB4437;
   outline: none;
 }
 
 .search-btn {
-  padding: 12px 16px;
-  background-color: #e74c3c;
+  padding: 0.75rem 1rem;
+  background-color: #DB4437;
   color: white;
   border: none;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .search-btn:hover {
-  background-color: #c0392b;
+  background-color: #DB4437;
 }
 
 .search-btn svg {
@@ -97,7 +97,7 @@
 }
 
 .user-phone {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #666;
   font-weight: 500;
 }
@@ -127,7 +127,7 @@
 }
 
 .wishlist-btn:hover svg {
-  color: #e74c3c;
+  color: #DB4437;
 }
 
 .cart-btn:hover svg {
@@ -148,12 +148,12 @@
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #e74c3c;
+  background-color: #3b82f6;
   color: white;
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
   display: flex;
   align-items: center;

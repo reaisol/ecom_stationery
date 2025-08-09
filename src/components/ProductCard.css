@@ -42,7 +42,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
   transition: all 0.3s ease;
 }
 
@@ -57,11 +57,11 @@
 }
 
 .wishlist-heart svg {
-  color: #e74c3c;
+  color: #3b82f6;
 }
 
 .wishlist-heart.wishlisted svg {
-  color: #e74c3c;
+  color: #3b82f6;
 }
 
 .product-info {
@@ -73,7 +73,7 @@
 }
 
 .product-name {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 1rem;
@@ -83,7 +83,7 @@
 .product-description {
   margin: 0;
   color: #34495e;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   line-height: 1.55;
 }
 
@@ -95,13 +95,13 @@
 }
 
 .current-price {
-  font-size: 1.2rem;
+  font-size: var(--fs-price);
   font-weight: 700;
-  color: #e74c3c;
+  color: #3b82f6;
 }
 
 .original-price {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   color: #95a5a6;
   text-decoration: line-through;
 }
@@ -112,10 +112,10 @@
 
 .weight-selector {
   width: 100%;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: white;
 }
 
@@ -129,9 +129,9 @@
   background-color: #e74c3c;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 0.75rem;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: var(--fs-cta);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -167,7 +167,5 @@
     font-size: 1rem;
   }
   
-  .current-price {
-    font-size: 1.1rem;
-  }
+  .current-price { font-size: 1.1rem; }
 }

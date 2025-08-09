@@ -668,6 +668,76 @@ def validate_coupon():
         'message': f'Coupon applied successfully! You saved ₹{discount_amount}'
     })
 
+# --- Category and product datasets for category pages ---
+CATEGORIES = [
+    {"id": 1, "name": "A1 Paper Sheets", "slug": "a1-paper-sheets", "heroImageUrl": "/images/a3-bundle.jpg", "description": "Premium quality, A1 Sheets."},
+    {"id": 2, "name": "A2 Paper Sheets", "slug": "a2-paper-sheets", "heroImageUrl": "/images/a2-bundle.jpg", "description": "Premium quality, A2 Sheets."},
+    {"id": 3, "name": "A3 Paper Sheets", "slug": "a3-paper-sheets", "heroImageUrl": "/images/a3-bundle.jpg", "description": "Premium quality, A3 Sheets."},
+    {"id": 4, "name": "A4 Paper Sheets", "slug": "a4-paper-sheets", "heroImageUrl": "/images/a4-bundle.jpg", "description": "Premium quality, A4 Sheets."},
+    {"id": 5, "name": "Passport Size Photos", "slug": "passport-size-photos", "heroImageUrl": "/images/passport-photo.jpg", "description": "Premium photo sheets."},
+]
+
+# Simple pool of brands and gsm options
+_BRANDS = ["B2B", "Global Paper Co.", "Acme Papers", "FinePrint", "PaperWorks", "Premium Pulp", "BrightLeaf", "Metro Paper"]
+_GSMS = [70, 75, 80, 90]
+
+# Build 8 demo products per category
+_DEMO_PRODUCTS_BY_SLUG = {}
+_pid = 100
+for cat in CATEGORIES:
+    items = []
+    for i in range(8):
+        brand = _BRANDS[i % len(_BRANDS)]
+        base_price = 3.0 + (i % 5) * 0.2
+        items.append({
+            "id": _pid,
+            "name": cat["name"],
+            "categorySlug": cat["slug"],
+            "brand": brand,
+            "imageUrl": cat["heroImageUrl"],
+            "gsmOptions": _GSMS,
+            "pricePerUnit": round(base_price, 2),
+            "minOrderQty": 10,
+            "inStock": True if i % 7 != 0 else False
+        })
+        _pid += 1
+    _DEMO_PRODUCTS_BY_SLUG[cat["slug"]] = items
+
+@app.route('/api/categories', methods=['GET'])
+def get_categories():
+    """Return list of categories for homepage navigation."""
+    return jsonify(CATEGORIES)
+
+@app.route('/api/categories/<slug>/products', methods=['GET'])
+def get_products_by_category(slug):
+    """Return demo products for a given category slug. Supports optional q filter and pagination inputs but returns a small set by default."""
+    items = _DEMO_PRODUCTS_BY_SLUG.get(slug)
+    if items is None:
+        return jsonify({"items": [], "total": 0, "page": 1, "pageSize": 12}), 404
+
+    # Optional query params (kept for compatibility, but we do simple filtering only by q)
+    q = (request.args.get('q') or '').strip().lower()
+    page = int(request.args.get('page', 1))
+    pageSize = int(request.args.get('pageSize', 12))
+
+    filtered = items
+    if q:
+        filtered = [p for p in items if q in (p['brand'].lower() + ' ' + p['name'].lower())]
+
+    total = len(filtered)
+    # Simple pagination over the small set
+    start = (page - 1) * pageSize
+    end = start + pageSize
+    page_items = filtered[start:end]
+
+    return jsonify({
+        "items": page_items,
+        "total": total,
+        "page": page,
+        "pageSize": pageSize,
+        "facets": {"brands": sorted(list({p['brand'] for p in items})), "gsms": _GSMS}
+    })
+
 @app.route('/api/products', methods=['GET'])
 def get_products():
     """Get sample products for homepage"""
