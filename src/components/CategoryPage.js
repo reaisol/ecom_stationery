@@ -172,7 +172,6 @@ export default function CategoryPage() {
                 </Link>
                 <div className="product-info">
                   <h3 className="brand-title">{p.brand}</h3>
-                  <p className="subtitle">Leading supplier of premium office paper and specialized photo paper.</p>
                   <div className="controls-row">
                     <label className="gsm-select">
                       <span>GSM</span>
