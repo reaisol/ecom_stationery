@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { SearchIcon, HeartIcon, CartIcon, UserIcon } from '../icons';
 import LoginModal from './LoginModal';
@@ -10,11 +11,19 @@ const Header = () => {
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const { getCartCount } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = (userData) => {
     setUser(userData);
     setIsLoginModalOpen(false);
     setIsSignupModalOpen(false);
+    // Redirect if query has redirect param
+    const params = new URLSearchParams(location.search);
+    const redirect = params.get('redirect');
+    if (redirect) {
+      navigate(redirect, { replace: true });
+    }
   };
 
   const handleSignup = (userData) => {
@@ -37,6 +46,14 @@ const Header = () => {
     setIsSignupModalOpen(false);
     setIsLoginModalOpen(true);
   };
+
+  // Open login modal automatically when ?login=1 is present
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('login') === '1') {
+      setIsLoginModalOpen(true);
+    }
+  }, [location.search]);
 
   return (
     <>
@@ -64,7 +81,7 @@ const Header = () => {
                 <div className="user-menu">
                   <div className="user-profile">
                     <UserIcon size={24} />
-                    <span className="user-phone">{user.phone}</span>
+                    <span className="user-phone">{user.phoneNumber}</span>
                   </div>
                   <button className="btn btn-secondary" onClick={handleLogout}>
                     Logout
@@ -82,7 +99,7 @@ const Header = () => {
               <button className="wishlist-btn">
                 <HeartIcon size={24} />
               </button>
-              <button className="cart-btn">
+              <button className="cart-btn" onClick={() => navigate('/cart')}>
                 <CartIcon size={24} />
                 {getCartCount() > 0 && (
                   <span className="cart-count">{getCartCount()}</span>
@@ -92,7 +109,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-      
+
       {isLoginModalOpen && (
         <LoginModal 
           onClose={() => setIsLoginModalOpen(false)}

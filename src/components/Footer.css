@@ -11,5 +11,3 @@
 .footer-col li { color: #6b7280; margin: 0.35rem 0; }
 .copyright { text-align: center; color: #9ca3af; font-size: 0.9rem; padding: 0.75rem 0 1.5rem; }
 @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; } .footer-cols { grid-template-columns: 1fr 1fr; } }
-
-

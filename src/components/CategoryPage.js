@@ -75,7 +75,7 @@ export default function CategoryPage() {
     const nextGsm = { ...gsmByProduct };
     const nextQty = { ...qtyByProduct };
     response.items.forEach(p => {
-      if (!(p.id in nextQty)) nextQty[p.id] = p.minOrderQty || 1;
+      if (!(p.id in nextQty)) nextQty[p.id] = 1; // default to 1 instead of minOrderQty
       if (!(p.id in nextGsm)) nextGsm[p.id] = '';
     });
     setGsmByProduct(nextGsm);
@@ -101,7 +101,7 @@ export default function CategoryPage() {
 
   function handleAddToCart(p) {
     const selectedGsm = gsmByProduct[p.id];
-    const qty = Number(qtyByProduct[p.id] || p.minOrderQty || 1);
+    const qty = Number(qtyByProduct[p.id] || 1); // min 1
     if (!selectedGsm) {
       setToast('Please select a GSM first');
       setTimeout(() => setToast(''), 1800);
@@ -120,9 +120,9 @@ export default function CategoryPage() {
     setTimeout(() => setToast(''), 1600);
   }
 
-  function changeQty(id, delta, min) {
-    const current = Number(qtyByProduct[id] || min || 1);
-    const next = Math.max(min || 1, current + delta);
+  function changeQty(id, delta) {
+    const current = Number(qtyByProduct[id] || 1);
+    const next = Math.max(1, current + delta); // min 1
     setQtyByProduct(prev => ({ ...prev, [id]: next }));
   }
 
@@ -167,9 +167,9 @@ export default function CategoryPage() {
           <div className="products-grid">
             {filteredItems.map(p => (
               <div key={p.id} className="card product-card">
-                <div className="product-image">
+                <Link to={`/product/${p.id}`} className="product-image" aria-label={`View ${p.brand} ${p.name}`}>
                   <img src={p.imageUrl || '/images/a4-bundle.jpg'} alt={`${p.brand} ${categoryName}`} loading="lazy" />
-                </div>
+                </Link>
                 <div className="product-info">
                   <h3 className="brand-title">{p.brand}</h3>
                   <p className="subtitle">Leading supplier of premium office paper and specialized photo paper.</p>
@@ -188,14 +188,14 @@ export default function CategoryPage() {
                     </label>
 
                     <div className="qty-stepper" aria-label="Quantity selector">
-                      <button className="step" onClick={() => changeQty(p.id, -1, p.minOrderQty)}>-</button>
+                      <button className="step" onClick={() => changeQty(p.id, -1)}>-</button>
                       <input
                         type="number"
-                        min={p.minOrderQty || 1}
-                        value={qtyByProduct[p.id] || p.minOrderQty || 1}
-                        onChange={(e) => setQtyByProduct(prev => ({ ...prev, [p.id]: Math.max(p.minOrderQty || 1, Number(e.target.value) || (p.minOrderQty || 1)) }))}
+                        min={1}
+                        value={qtyByProduct[p.id] || 1}
+                        onChange={(e) => setQtyByProduct(prev => ({ ...prev, [p.id]: Math.max(1, Number(e.target.value) || 1) }))}
                       />
-                      <button className="step" onClick={() => changeQty(p.id, 1, p.minOrderQty)}>+</button>
+                      <button className="step" onClick={() => changeQty(p.id, 1)}>+</button>
                     </div>
                   </div>
 

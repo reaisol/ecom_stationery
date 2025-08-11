@@ -45,7 +45,7 @@ def get_db_connection():
         return None
 
 def init_database():
-    """Initialize PostgreSQL database with user table"""
+    """Initialize PostgreSQL database with user, orders, order_items, and addresses tables"""
     conn = get_db_connection()
     if not conn:
         print("Failed to connect to database")
@@ -92,6 +92,50 @@ def init_database():
         
         cursor.execute('''
             CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)
+        ''')
+
+        # Addresses table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS addresses (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+                full_name VARCHAR(255) NOT NULL,
+                phone VARCHAR(20) NOT NULL,
+                house VARCHAR(255) NOT NULL,
+                landmark VARCHAR(255),
+                street VARCHAR(255),
+                city VARCHAR(120),
+                state VARCHAR(120),
+                pincode VARCHAR(20),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+
+        # Orders table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS orders (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+                address_id INTEGER REFERENCES addresses (id),
+                payment_method VARCHAR(20) NOT NULL,
+                total_amount NUMERIC(10,2) NOT NULL,
+                status VARCHAR(20) DEFAULT 'PLACED',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+
+        # Order items table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS order_items (
+                id SERIAL PRIMARY KEY,
+                order_id INTEGER NOT NULL REFERENCES orders (id) ON DELETE CASCADE,
+                product_id INTEGER,
+                name VARCHAR(255) NOT NULL,
+                image TEXT,
+                variant VARCHAR(120),
+                unit_price NUMERIC(10,2) NOT NULL,
+                quantity INTEGER NOT NULL
+            )
         ''')
         
         conn.commit()
@@ -844,10 +888,102 @@ def get_products():
     
     return jsonify(products)
 
+@app.route('/api/products/<int:pid>', methods=['GET'])
+def get_product_by_id(pid):
+    """Return a single product by id from the demo catalog."""
+    for items in _DEMO_PRODUCTS_BY_SLUG.values():
+        for p in items:
+            if p['id'] == pid:
+                # augment with optional longDescription/gallery/highlights
+                enriched = dict(p)
+                enriched['longDescription'] = (
+                    'Pack of premium sheets offering excellent print quality, ' \
+                    'smooth surface, and consistent performance for daily printing tasks.'
+                )
+                enriched['gallery'] = [p['imageUrl'], p['imageUrl'], p['imageUrl']]
+                enriched['highlights'] = [
+                    'Suitable for all printer types',
+                    'Smooth surface for crisp prints',
+                    'Balanced opacity and brightness'
+                ]
+                return jsonify(enriched)
+    return jsonify({'error': 'Not found'}), 404
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
     return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
+
+# --- Auth helper route ---
+@app.route('/api/me', methods=['GET'])
+def get_me():
+    token = request.headers.get('X-Session-Token') or request.args.get('session_token')
+    if not token:
+        return jsonify({'error': 'No session'}), 401
+    user = verify_session(token)
+    if not user:
+        return jsonify({'error': 'Invalid session'}), 401
+    return jsonify({'user': user})
+
+# --- Orders ---
+@app.route('/api/orders', methods=['POST'])
+def create_order():
+    data = request.get_json() or {}
+    token = request.headers.get('X-Session-Token')
+    if not token:
+        return jsonify({'error': 'Missing session'}), 401
+    user = verify_session(token)
+    if not user:
+        return jsonify({'error': 'Invalid session'}), 401
+
+    items = data.get('items') or []
+    address = data.get('address') or {}
+    payment_method = data.get('paymentMethod') or 'cod'
+    if not items:
+        return jsonify({'error': 'No items provided'}), 400
+
+    total_amount = sum(float(i.get('unitPrice', 0)) * int(i.get('quantity', 0)) for i in items)
+
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'error': 'Database connection failed'}), 500
+    cur = conn.cursor()
+    try:
+        # Insert or reuse address (for simplicity always insert a record)
+        cur.execute('''
+            INSERT INTO addresses (user_id, full_name, phone, house, landmark, street, city, state, pincode)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id
+        ''', (
+            user['id'], address.get('fullName',''), address.get('phone',''), address.get('house',''),
+            address.get('landmark'), address.get('street'), address.get('city'), address.get('state'), address.get('pincode')
+        ))
+        address_id = cur.fetchone()['id']
+
+        # Insert order
+        cur.execute('''
+            INSERT INTO orders (user_id, address_id, payment_method, total_amount)
+            VALUES (%s,%s,%s,%s) RETURNING id
+        ''', (user['id'], address_id, payment_method, total_amount))
+        order_id = cur.fetchone()['id']
+
+        # Insert items
+        for i in items:
+            cur.execute('''
+                INSERT INTO order_items (order_id, product_id, name, image, variant, unit_price, quantity)
+                VALUES (%s,%s,%s,%s,%s,%s,%s)
+            ''', (
+                order_id, i.get('productId'), i.get('name'), i.get('image'), i.get('variant'),
+                float(i.get('unitPrice',0)), int(i.get('quantity',0))
+            ))
+        conn.commit()
+        return jsonify({'message': 'Order placed', 'orderId': order_id})
+    except psycopg2.Error as e:
+        print('Order error:', e)
+        conn.rollback()
+        return jsonify({'error': 'Failed to place order'}), 500
+    finally:
+        cur.close()
+        conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
