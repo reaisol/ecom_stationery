@@ -168,7 +168,14 @@ export default function CategoryPage() {
             {filteredItems.map(p => (
               <div key={p.id} className="card product-card">
                 <Link to={`/product/${p.id}`} className="product-image" aria-label={`View ${p.brand} ${p.name}`}>
-                  <img src={p.imageUrl || '/images/a4-bundle.jpg'} alt={`${p.brand} ${categoryName}`} loading="lazy" />
+                  <img 
+                    src={p.imageUrl || 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg'} 
+                    alt={`${p.brand} ${categoryName}`} 
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg';
+                    }}
+                  />
                 </Link>
                 <div className="product-info">
                   <h3 className="brand-title">{p.brand}</h3>

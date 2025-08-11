@@ -714,11 +714,11 @@ def validate_coupon():
 
 # --- Category and product datasets for category pages ---
 CATEGORIES = [
-    {"id": 1, "name": "A1 Paper Sheets", "slug": "a1-paper-sheets", "heroImageUrl": "/images/a3-bundle.jpg", "description": "Premium quality, A1 Sheets."},
-    {"id": 2, "name": "A2 Paper Sheets", "slug": "a2-paper-sheets", "heroImageUrl": "/images/a2-bundle.jpg", "description": "Premium quality, A2 Sheets."},
-    {"id": 3, "name": "A3 Paper Sheets", "slug": "a3-paper-sheets", "heroImageUrl": "/images/a3-bundle.jpg", "description": "Premium quality, A3 Sheets."},
-    {"id": 4, "name": "A4 Paper Sheets", "slug": "a4-paper-sheets", "heroImageUrl": "/images/a4-bundle.jpg", "description": "Premium quality, A4 Sheets."},
-    {"id": 5, "name": "Passport Size Photos", "slug": "passport-size-photos", "heroImageUrl": "/images/passport-photo.jpg", "description": "Premium photo sheets."},
+    {"id": 1, "name": "A1 Paper Sheets", "slug": "a1-paper-sheets", "heroImageUrl": "https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a3-bundle.jpg", "description": "Premium quality, A1 Sheets."},
+    {"id": 2, "name": "A2 Paper Sheets", "slug": "a2-paper-sheets", "heroImageUrl": "https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a2-bundle.jpg", "description": "Premium quality, A2 Sheets."},
+    {"id": 3, "name": "A3 Paper Sheets", "slug": "a3-paper-sheets", "heroImageUrl": "https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a3-bundle.jpg", "description": "Premium quality, A3 Sheets."},
+    {"id": 4, "name": "A4 Paper Sheets", "slug": "a4-paper-sheets", "heroImageUrl": "https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg", "description": "Premium quality, A4 Sheets."},
+    {"id": 5, "name": "Passport Size Photos", "slug": "passport-size-photos", "heroImageUrl": "https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/passport-photo.jpg", "description": "Premium photo sheets."},
 ]
 
 # Simple pool of brands and gsm options
@@ -791,7 +791,7 @@ def get_products():
             'name': 'A1 Bundle Sheet',
             'price': 400.00,
             'original_price': 450.00,
-            'image': '/images/a4-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg',
             'description': 'Premium A1 bundle sheets suitable for posters, CAD drawings, and presentation prints.',
             'variants': [
                 {'weight': '250 g', 'price': 400.00},
@@ -805,7 +805,7 @@ def get_products():
             'name': 'A4 Bundle Sheet',
             'price': 220.00,
             'original_price': 300.00,
-            'image': '/images/a4-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg',
             'description': 'Everyday A4 bundle sheets for office printouts, school projects, and home use.',
             'variants': [
                 {'weight': '250 g', 'price': 220.00},
@@ -819,7 +819,7 @@ def get_products():
             'name': 'A5 Bundle Sheet',
             'price': 400.00,
             'original_price': 450.00,
-            'image': '/images/a3-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a3-bundle.jpg',
             'description': 'Premium quality A5 papers for professional documentation and printing.',
             'variants': [
                 {'weight': '250 g', 'price': 400.00},
@@ -833,7 +833,7 @@ def get_products():
             'name': 'A0 Bundle Sheet',
             'price': 220.00,
             'original_price': 260.00,
-            'image': '/images/a2-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a2-bundle.jpg',
             'description': 'Large format A0 papers ideal for architectural drawings and large prints.',
             'variants': [
                 {'weight': '100 g', 'price': 220.00},
@@ -847,7 +847,7 @@ def get_products():
             'name': 'Passport Photo Sheet',
             'price': 380.00,
             'original_price': 400.00,
-            'image': '/images/passport-photo.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/passport-photo.jpg',
             'description': 'Glossy photo sheets optimized for crisp, passport-size photo prints.',
             'variants': [
                 {'weight': '250 g', 'price': 380.00},
@@ -861,7 +861,7 @@ def get_products():
             'name': 'A2 Bundle Sheet',
             'price': 340.00,
             'original_price': 380.00,
-            'image': '/images/a2-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a2-bundle.jpg',
             'description': 'Premium A2 size papers for medium format printing and design work.',
             'variants': [
                 {'weight': '250 g', 'price': 340.00},
@@ -875,7 +875,7 @@ def get_products():
             'name': 'A1 Bundle Sheet',
             'price': 280.00,
             'original_price': 320.00,
-            'image': '/images/a4-bundle.jpg',
+            'image': 'https://raw.githubusercontent.com/reaisol/ecom_stationery/master/public/images/a4-bundle.jpg',
             'description': 'High-quality A1 papers perfect for technical drawings and presentations.',
             'variants': [
                 {'weight': '200 g', 'price': 280.00},
